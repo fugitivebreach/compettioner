@@ -1,2 +1,0 @@
-# compettioner
-ee

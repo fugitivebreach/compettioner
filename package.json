@@ -1,0 +1,19 @@
+{
+  "name": "competitioner",
+  "version": "1.0.0",
+  "description": "A modern typing speed test website with WPM, CPS, and spacebar tests",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["typing", "wpm", "speed-test", "cps", "spacebar"],
+  "author": "Competitioner",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

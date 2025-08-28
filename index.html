@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitioner - WPM Typing Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="CompetionerIcon.jpg" alt="Competitioner Logo" class="logo">
+                <h1 class="site-title">Competitioner</h1>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-tab="home">Home</button>
+                <button class="nav-tab" data-tab="wpm-test">WPM Test</button>
+                <button class="nav-tab" data-tab="cps-test">CPS Test</button>
+                <button class="nav-tab" data-tab="spacebar-test">Spacebar Test</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Home Tab -->
+        <section id="home" class="tab-content active">
+            <div class="hero-section">
+                <h2 class="hero-title">Test Your Typing Speed</h2>
+                <p class="hero-description">Test your typing speed, clicking speed, and spacebar skills</p>
+                <div class="hero-buttons">
+                    <button class="cta-button" onclick="switchTab('wpm-test')">WPM Test</button>
+                    <button class="cta-button" onclick="switchTab('cps-test')">CPS Test</button>
+                    <button class="cta-button" onclick="switchTab('spacebar-test')">Spacebar Test</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- WPM Test Tab -->
+        <section id="wpm-test" class="tab-content">
+            <div class="test-container">
+                <div class="test-setup" id="test-setup">
+                    <h2 class="section-title">Configure Your Test</h2>
+                    
+                    <div class="config-group">
+                        <label class="config-label">Test Mode:</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="testMode" value="words" checked>
+                                <span class="radio-custom"></span>
+                                Custom Word Count
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="testMode" value="time">
+                                <span class="radio-custom"></span>
+                                Timed Test
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-group" id="word-count-config">
+                        <label class="config-label" for="wordCount">Number of Words:</label>
+                        <input type="number" id="wordCount" class="config-input" value="25" min="10" max="200">
+                    </div>
+
+                    <div class="config-group hidden" id="time-config">
+                        <label class="config-label" for="testTime">Test Duration:</label>
+                        <select id="testTime" class="config-select">
+                            <option value="1">1 minute</option>
+                            <option value="2">2 minutes</option>
+                            <option value="3">3 minutes</option>
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                        </select>
+                    </div>
+
+                    <button class="start-button" onclick="startTest()">Start Test</button>
+                </div>
+
+                <div class="test-area hidden" id="test-area">
+                    <div class="test-info">
+                        <div class="timer" id="timer">Time: 0s</div>
+                        <div class="progress" id="progress">Progress: 0%</div>
+                    </div>
+                    
+                    <div class="text-display" id="text-display"></div>
+                    <textarea class="typing-input" id="typing-input" placeholder="Start typing here..." autofocus></textarea>
+                    
+                    <div class="test-controls">
+                        <button class="control-button" onclick="resetTest()">Reset</button>
+                        <button class="control-button" onclick="endTest()">End Test</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CPS Test Tab -->
+        <section id="cps-test" class="tab-content">
+            <div class="test-container">
+                <div class="cps-setup" id="cps-setup">
+                    <h2 class="section-title">Clicks Per Second Test</h2>
+                    <p class="test-description">Click as fast as you can in the time limit!</p>
+                    
+                    <div class="config-group">
+                        <label class="config-label" for="cpsTime">Test Duration:</label>
+                        <select id="cpsTime" class="config-select">
+                            <option value="1">1 second</option>
+                            <option value="5" selected>5 seconds</option>
+                            <option value="10">10 seconds</option>
+                            <option value="15">15 seconds</option>
+                            <option value="30">30 seconds</option>
+                        </select>
+                    </div>
+
+                    <button class="start-button" onclick="startCPSTest()">Start CPS Test</button>
+                </div>
+
+                <div class="cps-area hidden" id="cps-area">
+                    <div class="test-info">
+                        <div class="timer" id="cps-timer">Time: 5s</div>
+                        <div class="click-counter" id="click-counter">Clicks: 0</div>
+                    </div>
+                    
+                    <div class="click-zone" id="click-zone">
+                        <div class="click-target">CLICK HERE!</div>
+                        <div class="click-instructions">Click as fast as you can!</div>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="control-button" onclick="resetCPSTest()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacebar Test Tab -->
+        <section id="spacebar-test" class="tab-content">
+            <div class="test-container">
+                <div class="spacebar-setup" id="spacebar-setup">
+                    <h2 class="section-title">Spacebar Test</h2>
+                    <p class="test-description">Press the spacebar as fast as you can!</p>
+                    
+                    <div class="config-group">
+                        <label class="config-label" for="spacebarTime">Test Duration:</label>
+                        <select id="spacebarTime" class="config-select">
+                            <option value="1">1 second</option>
+                            <option value="5" selected>5 seconds</option>
+                            <option value="10">10 seconds</option>
+                            <option value="15">15 seconds</option>
+                            <option value="30">30 seconds</option>
+                        </select>
+                    </div>
+
+                    <button class="start-button" onclick="startSpacebarTest()">Start Spacebar Test</button>
+                </div>
+
+                <div class="spacebar-area hidden" id="spacebar-area">
+                    <div class="test-info">
+                        <div class="timer" id="spacebar-timer">Time: 5s</div>
+                        <div class="space-counter" id="space-counter">Presses: 0</div>
+                    </div>
+                    
+                    <div class="spacebar-zone" id="spacebar-zone">
+                        <div class="spacebar-visual" id="spacebar-visual">
+                            <div class="spacebar-key">SPACEBAR</div>
+                        </div>
+                        <div class="spacebar-instructions">Press the spacebar as fast as you can!</div>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="control-button" onclick="resetSpacebarTest()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="tab-content">
+            <div class="results-container">
+                <h2 class="section-title">Test Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-value" id="final-wpm">0</div>
+                        <div class="result-label">Average WPM</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-accuracy">0%</div>
+                        <div class="result-label">Accuracy</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-time">0s</div>
+                        <div class="result-label">Time Taken</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-errors">0</div>
+                        <div class="result-label">Errors</div>
+                    </div>
+                </div>
+                <div class="results-actions">
+                    <button class="cta-button" onclick="retakeTest()">Take Another Test</button>
+                    <button class="secondary-button" onclick="switchTab('home')">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CPS Results Section -->
+        <section id="cps-results" class="tab-content">
+            <div class="results-container">
+                <h2 class="section-title">CPS Test Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-value" id="final-cps">0</div>
+                        <div class="result-label">Clicks Per Second</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-total-clicks">0</div>
+                        <div class="result-label">Total Clicks</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-cps-time">0s</div>
+                        <div class="result-label">Test Duration</div>
+                    </div>
+                </div>
+                <div class="results-actions">
+                    <button class="cta-button" onclick="retakeCPSTest()">Take Another CPS Test</button>
+                    <button class="secondary-button" onclick="switchTab('home')">Back to Home</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacebar Results Section -->
+        <section id="spacebar-results" class="tab-content">
+            <div class="results-container">
+                <h2 class="section-title">Spacebar Test Results</h2>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-value" id="final-sps">0</div>
+                        <div class="result-label">Presses Per Second</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-total-presses">0</div>
+                        <div class="result-label">Total Presses</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="final-spacebar-time">0s</div>
+                        <div class="result-label">Test Duration</div>
+                    </div>
+                </div>
+                <div class="results-actions">
+                    <button class="cta-button" onclick="retakeSpacebarTest()">Take Another Spacebar Test</button>
+                    <button class="secondary-button" onclick="switchTab('home')">Back to Home</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
